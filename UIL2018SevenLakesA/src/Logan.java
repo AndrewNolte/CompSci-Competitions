@@ -29,7 +29,7 @@ public class Logan {
 //
 //            }
 //        }
-        int[][] ans = nChooser(5,4);
+        int[][] ans = nChooser(6,3);
         for (int i = 0; i < ans.length; i++) {
             System.out.println(Arrays.toString(ans[i]));
             
