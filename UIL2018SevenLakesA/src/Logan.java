@@ -17,22 +17,21 @@ public class Logan {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-//        Scanner sc = new Scanner(new File("input.dat"));
-//        int numTimes = sc.nextInt();
-//        for (int iteration = 0; iteration < numTimes; iteration++) {
-//
-//            int capacity = sc.nextInt();
-//
-//            int numTimes2 = sc.nextInt();
-//
-//            for (int iteration2 = 0; iteration2 < numTimes2; iteration2++) {
-//
-//            }
-//        }
-        int[][] ans = nChooser(6,3);
-        for (int i = 0; i < ans.length; i++) {
-            System.out.println(Arrays.toString(ans[i]));
-            
+        Scanner sc = new Scanner(new File("input.dat"));
+        int numTimes = sc.nextInt();
+        for (int iteration = 0; iteration < numTimes; iteration++) {
+
+            int capacity = sc.nextInt();
+
+            int numTimes2 = sc.nextInt();
+
+            for (int iteration2 = 0; iteration2 < numTimes2; iteration2++) {
+
+            }
+        }
+        int[][] ans = nChooser(9,4);
+        for (int[] an : ans) {
+            System.out.println(Arrays.toString(an));
         }
 
     }
@@ -52,6 +51,7 @@ public class Logan {
     }
 
     public static int[][] nChooser(int n, int r) {
+        //find the length
         int big = Math.max(r, n - r);
         int small = Math.min(r, n - r);
         int len = 1;
@@ -59,8 +59,9 @@ public class Logan {
             len *= i;
         }
         len /= factorial(small);
+        
+        //construct bounds, answer, and current list
         int[][] ans = new int[len][r];
-
         int[] bases = new int[r];
         int[] roofs = new int[r];
         for (int i = 0; i < r; i++) {
@@ -68,33 +69,29 @@ public class Logan {
             roofs[r - 1 - i] = n - 1 - i;
         }
         int[] cur = bases.clone();
-        int[] orig = bases.clone();
+        
+        //solve
         int i = 0;
         while (i < len) {
             ans[i] = cur.clone();
             boolean carry = true;
-            for (int j = r - 1; (j >= 0) && carry; j--) {               //add 1, starting all the way at the right
+            for (int j = r - 1; (j >= 0) && carry; j--) {       //add 1, starting all the way at the right
                 cur[j]++;
                 if (cur[j] > roofs[j]) {
                     carry = true;
-                    if(bases[j]  >= roofs[j]){
-                        bases[j] = ++orig[j];
-                        cur[j] = bases[j];
-                    }else{
-                        cur[j] = ++bases[j];
-                    }
                 } else {
                     carry = false;
+                    for (int k = 1; k + j < cur.length; k++) {  //reset nums to the right
+                        cur[k+j] = cur[j] + k;
+                    }
                 }
             }
             i++;
         }
         return ans;
-
-       
-
     }
 
+    //works for ints on the range [0, inf)
     public static int factorial(int n) {
         if (n <= 1) {
             return 1;
