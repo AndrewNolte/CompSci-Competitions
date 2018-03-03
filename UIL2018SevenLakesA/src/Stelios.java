@@ -75,6 +75,7 @@ class Node{
         this.name = name;
     }
     
+    //must be added to both sibling sets, unless a unidirectional path
     public void addC(Node n){
         siblings.add(n);
     }

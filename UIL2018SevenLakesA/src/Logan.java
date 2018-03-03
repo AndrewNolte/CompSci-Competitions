@@ -17,38 +17,61 @@ public class Logan {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        Scanner sc = new Scanner(new File("input.dat"));
+        Scanner sc = new Scanner(new File("logan.dat"));
         int numTimes = sc.nextInt();
         for (int iteration = 0; iteration < numTimes; iteration++) {
 
             int capacity = sc.nextInt();
-
             int numTimes2 = sc.nextInt();
 
+            Bag[] bags = new Bag[numTimes2];
             for (int iteration2 = 0; iteration2 < numTimes2; iteration2++) {
-
+               bags[iteration2] = new Bag(sc.nextInt(), sc.nextInt(), sc.next());
             }
+            
+            int maxval = 0;
+            int val = 0;
+            int wt = 0;
+            int wtused = 0;
+            int[] bestOpt = null;
+            for (int i = bags.length; i > 0; i--) {     //start with max option
+                
+                int[][] options = nChooser(bags.length, i);
+                
+                for (int[] option : options) {          //look at all options
+                    wt = 0;
+                    val = 0;
+                    for (int k = 0; k < option.length; k++) {
+                        wt += bags[option[k]].w;
+                        val += bags[option[k]].val;
+                    }
+                    if (wt <= capacity && val > maxval) {
+                        maxval = val;
+                        bestOpt = option;
+                        wtused = wt;
+                    }
+                }
+                if(bestOpt != null){
+                    break;
+                }
+            }
+            System.out.println(capacity);
+            System.out.println(wtused);
+            System.out.println("$" + maxval);
+            for(int i : bestOpt){
+                System.out.println(bags[i].color);
+            }
+            
         }
-        int[][] ans = nChooser(9,4);
+        
+        int[][] ans = nChooser(5,3);
         for (int[] an : ans) {
             System.out.println(Arrays.toString(an));
         }
 
     }
 
-    class Bag {
 
-        int val;
-        int w;
-        String color;
-
-        public Bag(int val, int w, String color) {
-            this.val = val;
-            this.w = w;
-            this.color = color;
-        }
-
-    }
 
     public static int[][] nChooser(int n, int r) {
         //find the length
@@ -101,3 +124,17 @@ public class Logan {
     }
 
 }
+
+    class Bag {
+
+        int val;
+        int w;
+        String color;
+
+        public Bag(int val, int w, String color) {
+            this.val = val;
+            this.w = w;
+            this.color = color;
+        }
+
+    }
